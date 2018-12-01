@@ -1,6 +1,5 @@
 # Receiving freshping.io notification on Telegram
-Use [freshping.io](https://freshping.io) webhook to notify a SMS if a site is down.
-
+Use [freshping.io](https://freshping.io) webhook to send notification through Telegram App when website is down
 
 ## How to use
 
