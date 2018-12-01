@@ -1,0 +1,5 @@
+/vendor/
+composer.lock
+access.log
+error.log
+config.php
