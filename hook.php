@@ -21,7 +21,10 @@ use Longman\TelegramBot\Request;
 $data = json_decode($json_data);
 $check_state = $data->webhook_event_data->check_state_name;
 $request_url = $data->webhook_event_data->request_url;
-$request_start_time = $data->webhook_event_data->request_start_time;
+$request_start_time = date(
+    'Y-m-d H:i:s T', 
+    strtotime( $data->webhook_event_data->request_start_time )
+);
 $check_name = $data->webhook_event_data->check_name;
 
 $message = "Check state changed to $check_state \n";
