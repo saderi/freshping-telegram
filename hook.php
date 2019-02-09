@@ -15,23 +15,31 @@ file_put_contents($file, $current);
 require_once __DIR__ . '/config.php';
 require_once __DIR__ . '/vendor/autoload.php';
 
-$telegram = new Longman\TelegramBot\Telegram($bot_token, $bot_username);
+$telegram = new Longman\TelegramBot\Telegram(BOT_TOKEN, BOT_USERNAME);
 use Longman\TelegramBot\Request;
 
 $data = json_decode($json_data);
-$webhook_event_data = $data->webhook_event_data;
-if ($webhook_event_data->check_state_name == 'Not Responding' && 
-    !in_array($webhook_event_data->check_name, $exceptionList)) {
+$check_state = $data->webhook_event_data->check_state_name;
+$request_url = $data->webhook_event_data->request_url;
+$request_start_time = $data->webhook_event_data->request_start_time;
+$check_name = $data->webhook_event_data->check_name;
 
-    $message = "Your site has a problem. Site name: $webhook_event_data->request_url.";
+$message = "Check state changed to $check_state \n";
+$message .= "URL tested: $request_url \n";
+$message .= "test time: $request_start_time \n";
 
-    $data = [
-        'chat_id' => $chat_id,
-        'text'    => $message,
-    ];
+$data = [
+    'chat_id' => CHAT_ID,
+    'text'    => $message,
+];
 
-    $resutl = Request::sendMessage($data);
-
+if ( ! in_array( $check_name, $exceptionList ) ) {
+    if ( ANY_STATE ) {
+        $resutl = Request::sendMessage($data);
+    } elseif ( $check_state == 'Not Responding' ) {
+        $resutl = Request::sendMessage($data);
+    }
 }
+
 
 ?>
